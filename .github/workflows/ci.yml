@@ -26,9 +26,11 @@ jobs:
           npm install
 
           PORT=3005 npm run dev &
-          
-          echo "BASE_URL=http://localhost:3005" >> tests/.env
-          sleep 10
+
+      - name: Add the port to the .env file
+        run: |
+          cd Tests
+          echo "BASE_URL=http://localhost:3005" > .env
 
       - name: Run Tests
         run: |
