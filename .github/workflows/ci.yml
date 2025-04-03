@@ -1,0 +1,38 @@
+name: Testing website
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Check out the repository
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # 2) Build the Website in `web/`
+      - name: Install and build website
+        run: |
+          cd qa-homework-mirror-main
+          npm install
+          npm run build
+
+      # 3) Start the website server in background
+      - name: Start website
+        run: |
+          cd qa-homework-mirror-main
+          npm run start &
+          # Wait a few seconds for it to spin up
+          sleep 5
+
+      # 4) Install and run Playwright tests in `tests/`
+      - name: Install and run Playwright tests
+        run: |
+          cd tests
+          npm install
+          npx playwright test
