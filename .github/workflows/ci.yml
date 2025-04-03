@@ -6,18 +6,19 @@ on:
 
 jobs:
   build-and-test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
 
       - name: Install tests dependences
         run: |
           cd Tests
           npm install
-          npx install playwright  
-          npm init playwright@latest
+          npx playwright install --with-deps
 
       - name: Go to latest folder and install the needed dependences
         run: |
