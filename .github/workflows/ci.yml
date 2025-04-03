@@ -16,6 +16,8 @@ jobs:
         run: |
           cd Tests
           npm install
+          npm init playwright@latest
+          
 
       - name: Go to latest folder and install the needed dependences
         run: |
@@ -35,5 +37,4 @@ jobs:
       - name: Run Tests
         run: |
           cd Tests
-          npx playwright install  
           npx playwright test
