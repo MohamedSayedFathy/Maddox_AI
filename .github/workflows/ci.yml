@@ -12,6 +12,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Install tests dependences
+        run: |
+          cd Tests
+          npm install
+
       - name: Go to latest folder and install the needed dependences
         run: |
           cd Website
@@ -20,21 +25,10 @@ jobs:
           cd "$NEWEST_DIR"
           npm install
 
-      - name: Install the tests dependences
-        run: |
-          cd Tests
-          npm install
-
-      - name: Start server
-        run: |
-          # 1) We define a fixed port, e.g. 3005
           PORT=3005 npm run dev &
-
-          # 2) Append the environment variable to your test .env
+          
           echo "BASE_URL=http://localhost:3005" >> tests/.env
-
-          # 3) Give the server time to start
-          sleep 5
+          sleep 10
 
       - name: Run Tests
         run: |
