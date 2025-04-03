@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test-latest-folder:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,40 +17,31 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16  # or 18, etc.
+          node-version: 16
 
-      - name: Identify newest folder in website/
-        id: find_folder
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Start server
         run: |
+          # 1) We define a fixed port, e.g. 3005
+          PORT=3005 npm run dev &
 
-          LATEST_FOLDER=$(ls -td website/*/ | head -n1)
-          
-          if [ -z "$LATEST_FOLDER" ]; then
-            echo "No folders found in website/. Exiting..."
-            exit 1
-          fi
-          
-          echo "Latest folder found: $LATEST_FOLDER"
-          # Pass it to subsequent steps via output variables
-          echo "LATEST_FOLDER=$LATEST_FOLDER" >> $GITHUB_OUTPUT
+          # 2) Append the environment variable to your test .env
+          echo "BASE_URL=http://localhost:3005" >> tests/.env
 
-      - name: Install and run dev
+          # 3) Give the server time to start
+          sleep 5
+
+      - name: Install test dependencies
         run: |
-          # Get the folder from the previous step
-          FOLDER="${{ steps.find_folder.outputs.LATEST_FOLDER }}"
-          echo "Entering $FOLDER"
-          cd "$FOLDER"
-          
-          # 1) Install dependencies
+          cd tests
           npm install
 
-          # 2) Start dev in the background
-          npm run dev &
-          # Wait for it to spin up
-          sleep 5
-          
-      - name: Run tests
+      - name: Run Tests
         run: |
-          # At this point, the dev server is running in background in the newest folder
-          # Adjust your test command as needed (Playwright, Cypress, etc.)
+          cd tests
           npx playwright test
