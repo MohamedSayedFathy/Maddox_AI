@@ -34,5 +34,5 @@ jobs:
 
       - name: Run Tests
         run: |
-          cd tests
+          cd Tests
           npx playwright test
