@@ -16,7 +16,7 @@ jobs:
         run: |
           cd Tests
           npm install
-          y | y | JavaScript25h | npx playwright install   
+          echo -e "\n\n\n\n" | npx playwright init  
           npm init playwright@latest
 
       - name: Go to latest folder and install the needed dependences
