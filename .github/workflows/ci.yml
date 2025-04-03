@@ -35,4 +35,5 @@ jobs:
       - name: Run Tests
         run: |
           cd Tests
+          npx playwright install  
           npx playwright test
