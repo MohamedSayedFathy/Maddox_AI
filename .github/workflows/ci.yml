@@ -19,8 +19,6 @@ jobs:
           echo "The newest directory is: $NEWEST_DIR"
           cd "$NEWEST_DIR"
           npm install
-          npm run dev
-          sleep 10
 
       - name: Install the tests dependences
         run: |
