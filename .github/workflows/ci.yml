@@ -1,38 +1,56 @@
-name: Testing website
+name: CI Pipeline
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  test-latest-folder:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Check out the repository
       - name: Check out repository
         uses: actions/checkout@v3
 
-      # 2) Build the Website in `web/`
-      - name: Install and build website
-        run: |
-          cd qa-homework-mirror-main
-          npm install
-          npm run build
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16  # or 18, etc.
 
-      # 3) Start the website server in background
-      - name: Start website
+      - name: Identify newest folder in website/
+        id: find_folder
         run: |
-          cd qa-homework-mirror-main
-          npm run start &
-          # Wait a few seconds for it to spin up
+
+          LATEST_FOLDER=$(ls -td website/*/ | head -n1)
+          
+          if [ -z "$LATEST_FOLDER" ]; then
+            echo "No folders found in website/. Exiting..."
+            exit 1
+          fi
+          
+          echo "Latest folder found: $LATEST_FOLDER"
+          # Pass it to subsequent steps via output variables
+          echo "LATEST_FOLDER=$LATEST_FOLDER" >> $GITHUB_OUTPUT
+
+      - name: Install and run dev
+        run: |
+          # Get the folder from the previous step
+          FOLDER="${{ steps.find_folder.outputs.LATEST_FOLDER }}"
+          echo "Entering $FOLDER"
+          cd "$FOLDER"
+          
+          # 1) Install dependencies
+          npm install
+
+          # 2) Start dev in the background
+          npm run dev &
+          # Wait for it to spin up
           sleep 5
-
-      # 4) Install and run Playwright tests in `tests/`
-      - name: Install and run Playwright tests
+          
+      - name: Run tests
         run: |
-          cd tests
-          npm install
+          # At this point, the dev server is running in background in the newest folder
+          # Adjust your test command as needed (Playwright, Cypress, etc.)
           npx playwright test
