@@ -57,10 +57,3 @@ Our Playwright configuration loads settings (such as `BASE_URL`) from a `.env` f
 - **Merge via Pull Request:** When you’re ready to update the `main` branch, open a pull request from `testing` to `main`. The CI checks (automated tests) must pass before the PR can be merged.
 - **Protected Main Branch:** Direct pushes to `main` are not allowed. This ensures that only thoroughly tested and reviewed changes make it into the production branch.
 
-## Contributing
-
-Contributions are welcome! To contribute:
-- Fork the repository and work on your feature branch.
-- Follow the process above to add new websites or update existing ones.
-- Make sure to run all tests locally before submitting a pull request.
-- Ensure that the CI pipeline passes on your PR.
