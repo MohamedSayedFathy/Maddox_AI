@@ -20,7 +20,7 @@ export default function Login() {
             localStorage.setItem("token", "dummy_token_12345");
             router.push("/");
         } else {
-            setMessage("Invalid email or password. Try again. ");
+            setMessage("Invalid email or password. Try again.");
         }
     };
 
