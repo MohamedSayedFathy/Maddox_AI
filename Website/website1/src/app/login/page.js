@@ -12,6 +12,7 @@ export default function Login() {
     const DUMMY_CREDENTIALS = {
         email: "test@maddox123.ai",
         password: "supersecure",
+        
     };
 
     const handleLogin = (e) => {
