@@ -50,7 +50,7 @@ export default function Home() {
                     <p style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>{count}</p>
                     <div style={{display: "flex", justifyContent: "space-between", marginBottom: "24px"}}>
                         <button className="counterButton" onClick={() => setCount(count + 1)}>+</button>
-                        <button className="counterButton" onClick={() => setCount(count - 1)}>-</button>
+                        <button className="counterButton" onClick={() => setCount(count)}>-</button>
                         <button className="counterButton" onClick={() => setCount(0)}>Reset</button>
 
                     </div>
